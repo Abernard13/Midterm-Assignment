@@ -2,10 +2,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <fcntl.h>
 #include <cstdlib>
 
-// Program 5: Closh (Clone Shell)
 void closh() {
     while (true) {
         std::string command, mode;
@@ -35,11 +33,10 @@ void closh() {
 }
 
 int main() {
-    std::cout << "Running programs for OS Midterm Exam...\n";
-    file_open_fork();
-    hello_goodbye();
-    close_stdout();
-    count_forks();
     closh();
     return 0;
 }
+
+
+
+
