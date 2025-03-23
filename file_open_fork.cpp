@@ -1,18 +1,16 @@
 #include <iostream>
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/wait.h>
 #include <fcntl.h>
 #include <cstdlib>
 
-// Program 1: File opening and fork()
 void file_open_fork() {
     int fd = open("testfile.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd < 0) {
         perror("open");
         exit(1);
     }
-    
+
     pid_t pid = fork();
     if (pid < 0) {
         perror("fork");
@@ -23,6 +21,10 @@ void file_open_fork() {
     } else {
         write(fd, "Parent process writing.\n", 24);
         close(fd);
-        wait(NULL);
     }
+}
+
+int main() {
+    file_open_fork();
+    return 0;
 }

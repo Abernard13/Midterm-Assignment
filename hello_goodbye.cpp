@@ -1,11 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <cstdlib>
 
-// Program 2: Printing "hello" and "goodbye" without wait()
 void hello_goodbye() {
     pid_t pid = fork();
     if (pid < 0) {
@@ -20,3 +15,7 @@ void hello_goodbye() {
     }
 }
 
+int main() {
+    hello_goodbye();
+    return 0;
+}
