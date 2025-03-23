@@ -1,42 +1,42 @@
 #include <iostream>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <cstdlib>
+#include <unistd.h>
+#include <vector>
 
-void closh() {
+using namespace std;
+
+int main() {
+    string command;
+    int count;
+    char mode;
+
     while (true) {
-        std::string command, mode;
-        int count;
+        cout << "closh> ";
+        cin >> command;
+        cout << "count> ";
+        cin >> count;
+        cout << "[p]arallel or [s]equential> ";
+        cin >> mode;
 
-        std::cout << "closh> ";
-        std::cin >> command;
-        std::cout << "count> ";
-        std::cin >> count;
-        std::cout << "[p]arallel or [s]equential> ";
-        std::cin >> mode;
+        vector<pid_t> pids;
 
         for (int i = 0; i < count; i++) {
             pid_t pid = fork();
             if (pid == 0) {
-                execlp(command.c_str(), command.c_str(), NULL);
-                perror("execlp");
+                execl(command.c_str(), command.c_str(), NULL);
+                perror("execl");  // If execl fails
                 exit(1);
-            } else if (pid > 0 && mode == "s") {
-                wait(NULL);
+            } else if (pid > 0) {
+                pids.push_back(pid);
+                if (mode == 's') waitpid(pid, NULL, 0);
             }
         }
-        if (mode == "p") {
-            while (wait(NULL) > 0);
+
+        if (mode == 'p') {
+            for (pid_t pid : pids) waitpid(pid, NULL, 0);
         }
     }
-}
 
-int main() {
-    closh();
     return 0;
 }
-
-
-
-
